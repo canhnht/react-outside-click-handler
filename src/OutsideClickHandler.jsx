@@ -19,6 +19,7 @@ const propTypes = forbidExtraProps({
   disabled: PropTypes.bool,
   useCapture: PropTypes.bool,
   display: PropTypes.oneOf(objectValues(DISPLAY)),
+  className: PropTypes.string,
 });
 
 const defaultProps = {
@@ -68,12 +69,9 @@ export default class OutsideClickHandler extends React.Component {
 
     const isDescendantOfRoot = this.childNode && contains(this.childNode, e.target);
     if (!isDescendantOfRoot) {
-      this.removeMouseUp = addEventListener(
-        document,
-        'mouseup',
-        this.onMouseUp,
-        { capture: useCapture },
-      );
+      this.removeMouseUp = addEventListener(document, 'mouseup', this.onMouseUp, {
+        capture: useCapture,
+      });
     }
   }
 
@@ -97,12 +95,9 @@ export default class OutsideClickHandler extends React.Component {
   }
 
   addMouseDownEventListener(useCapture) {
-    this.removeMouseDown = addEventListener(
-      document,
-      'mousedown',
-      this.onMouseDown,
-      { capture: useCapture },
-    );
+    this.removeMouseDown = addEventListener(document, 'mousedown', this.onMouseDown, {
+      capture: useCapture,
+    });
   }
 
   removeEventListeners() {
@@ -111,7 +106,7 @@ export default class OutsideClickHandler extends React.Component {
   }
 
   render() {
-    const { children, display } = this.props;
+    const { children, display, className } = this.props;
 
     return (
       <div
@@ -121,6 +116,7 @@ export default class OutsideClickHandler extends React.Component {
             ? { display }
             : undefined
         }
+        className={className}
       >
         {children}
       </div>
